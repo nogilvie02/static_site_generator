@@ -1,6 +1,6 @@
 import unittest
 
-from splitdelimiter import split_nodes_delimiter
+from inline_markdown import split_nodes_delimiter, extract_markdown_images
 from textnode import TextNode, TextType
 
 
@@ -54,6 +54,12 @@ class TestSplitDelimiter(unittest.TestCase):
         node = TextNode("This is not a `bold` node", TextType.TEXT)
         with self.assertRaises(ValueError):
             split_nodes_delimiter([node], "`", TextType.BOLD)
+
+    def test_extract_markdown_images(self):
+        matches = extract_markdown_images(
+            "This is text with an ![image](https://i.imgur.com/zjjcJKZ.png)"
+        )
+        self.assertListEqual([("image", "https://i.imgur.com/zjjcJKZ.png")], matches)
 
 if __name__ == "__main__":
     unittest.main()
