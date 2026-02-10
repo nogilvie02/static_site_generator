@@ -9,7 +9,7 @@ from block_markdown import (
     block_to_block_type,
     BlockType,
 )
-from markdown_to_html import markdown_to_html_node
+from markdown_to_html import markdown_to_html_node, extract_title
 
 
 class TestSplitDelimiter(unittest.TestCase):
@@ -268,6 +268,34 @@ the **same** even with inline stuff
             html,
             "<div><pre><code>This is text that _should_ remain\nthe **same** even with inline stuff\n</code></pre></div>",
         )
+
+
+    def test_extract_title(self):
+        md = "# This is the title"
+        title = extract_title(md)
+        self.assertEqual(title, "This is the title")
+
+
+    def test_extract_title_with_whitespace(self):
+        md = "# This is the title   "
+        title = extract_title(md)
+        self.assertEqual(title, "This is the title")
+
+
+    def test_extract_title_multiline(self):
+        md = """
+### This is not a title
+# This is the title
+"""
+        title = extract_title(md)
+        self.assertEqual(title, "This is the title")
+
+
+    def test_extract_title_no_title(self):
+        md = "## This is not the title"
+        with self.assertRaises(ValueError):
+            extract_title(md)
+
 
 if __name__ == "__main__":
     unittest.main()

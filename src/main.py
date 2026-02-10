@@ -1,7 +1,8 @@
-from textnode import TextNode, TextType
+from copystatic import copy_static, generate_pages_recursive
 
-def __main__():
-    test_text_node = TextNode("this is a test", TextType.LINK, "https://www.boot.dev")
-    print(test_text_node)
+def main():
+    copy_static("static", "public")
+    generate_pages_recursive("content", "template.html", "public")
     
-__main__()
+if __name__ == "__main__":
+    main()

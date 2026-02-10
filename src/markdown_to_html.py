@@ -1,3 +1,4 @@
+import re
 from block_markdown import BlockType, markdown_to_blocks, block_to_block_type
 from htmlnode import ParentNode
 from inline_markdown import text_to_textnodes
@@ -69,3 +70,12 @@ def text_to_children(text):
     for textnode in textnodes:
         children.append(text_node_to_html_node(textnode))
     return children
+
+
+def extract_title(markdown):
+    lines = markdown.split("\n")
+    for line in lines:
+        if line.startswith("# "):
+            return line[2:].strip()
+    raise ValueError("No h1 header in markdown file")
+
